@@ -1,0 +1,23 @@
+{
+  "name": "groceries",
+  "version": "1.0.0",
+  "description": "Check off your groceries",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "INNOQ (https://innoq.com)",
+  "type": "module",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "automerge": "^1.0.1-preview.5",
+    "fastify": "^3.22.1",
+    "fastify-formbody": "^5.1.0",
+    "fastify-static": "^4.4.2",
+    "point-of-view": "^4.15.2",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
+  }
+}

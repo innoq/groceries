@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+  head
+    title Groceries
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css")
+    script(type="module" src="/app.js")
+
+  body
+    h1 Groceries
+
+    automerge-list(initial=initial change-feed=feedURL)
+      ul
+        each todo in todos
+          li= todo.text
+
+      form(action=addURL method="post")
+        label(for="text") Text:
+        input#text(name="text" type="text")
+
+        input(type="submit" value="Add")
