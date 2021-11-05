@@ -4,7 +4,9 @@
   "description": "Check off your groceries",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "test": "eslint --cache index.js list.js static/*js",
+    "todo": "git grep TODO"
   },
   "author": "INNOQ (https://innoq.com)",
   "type": "module",
@@ -18,6 +20,8 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.4.1"
   }
 }
