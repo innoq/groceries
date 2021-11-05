@@ -37,8 +37,13 @@ class AutomergeList extends HTMLElement {
 		this.onMessage = this.onMessage.bind(this);
 		this.source.addEventListener("message", this.onMessage);
 		this.form.addEventListener("submit", this.onSubmit.bind(this));
+
+		this.indicator = document.createElement("p");
+		this.indicator.textContent = "Currently online";
+		this.appendChild(this.indicator);
+
 		this.button = document.createElement("button");
-		this.button.innerText = "Go offline";
+		this.button.textContent = "Go offline";
 		this.button.addEventListener("click", this.toggleOnline.bind(this));
 		this.appendChild(this.button);
 	}
@@ -84,12 +89,14 @@ class AutomergeList extends HTMLElement {
 			clearInterval(this.interval);
 			this.source.removeEventListener("message", this.onMessage);
 			this.source.close();
-			this.button.innerText = "Go online";
+			this.button.textContent = "Go online";
+			this.indicator.textContent = "Currently offline";
 		} else {
 			this.interval = setInterval(this.pushChanges.bind(this), 1000);
 			this.source = new EventSource(this.getAttribute("change-feed"));
 			this.source.addEventListener("message", this.onMessage);
-			this.button.innerText = "Go offline";
+			this.button.textContent = "Go offline";
+			this.indicator.textContent = "Currently online";
 		}
 		this.online = !this.online;
 	}
