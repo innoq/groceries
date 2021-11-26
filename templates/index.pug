@@ -2,7 +2,11 @@ doctype html
 html(lang="en")
   head
     title Groceries
-    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css")
+    link(rel="manifest" href="/manifest.json")
+    link(href="/icon.svg" rel="icon" type="image/svg+xml")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="description" content="An offline-ready grocery list")
+    link(rel="stylesheet" href="/water.css")
     script(type="module" src="/app.js")
 
   body
