@@ -14,7 +14,6 @@ export class List {
 	add(text) {
 		const newState = Automerge.change(this.state, `Add ${text}`, (doc) => {
 			doc.todos.push({
-				id: this.id,
 				text: text,
 				done: false,
 			});

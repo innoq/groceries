@@ -26,15 +26,25 @@ app.register(fastifyStatic, {
 app.get("/", async (request, reply) => {
 	return reply.view("templates/index.pug", {
 		todos: list.all(),
-		initial: list.backup(),
-		feedURL: "/stream",
 		addURL: "/",
 	});
+});
+
+app.get("/current", async (request, reply) => {
+	return reply.send(list.backup());
 });
 
 app.post("/", async (request, reply) => {
 	list.add(request.body.text);
 	reply.redirect("/");
+});
+
+app.post("/foo", async (request, reply) => {
+	let changes = request.body.changes.map((change) => {
+		return new Uint8Array(Buffer.from(change, "base64"));
+	});
+	list.apply(changes);
+	reply.send("ok");
 });
 
 app.get("/stream", (request, reply) => {
@@ -49,14 +59,6 @@ app.get("/stream", (request, reply) => {
 		reply.raw.write(`id: ${id++}\n`);
 		reply.raw.write(`data: ${ev.change} \n\n`);
 	});
-});
-
-app.post("/foo", async (request, reply) => {
-	let changes = request.body.changes.map((change) => {
-		return new Uint8Array(Buffer.from(change, "base64"));
-	});
-	list.apply(changes);
-	reply.send("ok");
 });
 
 const start = async () => {
