@@ -1,0 +1,16 @@
+{
+	"lang": "en",
+	"name": "Groceries",
+	"short_name": "groceries",
+	"description": "An offline-ready grocery list",
+	"start_url": "/",
+	"display": "minimal-ui",
+	"icons": [
+		{
+			"src": "/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "150x150",
+			"purpose": "any maskable"
+		}
+	]
+}

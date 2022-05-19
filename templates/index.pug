@@ -2,18 +2,22 @@ doctype html
 html(lang="en")
   head
     title Groceries
-    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css")
+    link(rel="manifest" href="/manifest.json")
+    link(href="/icon.svg" rel="icon" type="image/svg+xml")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="description" content="An offline-ready grocery list")
+    link(rel="stylesheet" href="/water.css")
     script(type="module" src="/app.js")
 
   body
     h1 Groceries
 
-    automerge-list(initial=initial change-feed=feedURL)
+    automerge-list
       ul
         each todo in todos
           li= todo.text
 
-      form(action=addURL method="post")
+      form(action="/" method="post")
         label(for="text") Text:
         input#text(name="text" type="text")
 

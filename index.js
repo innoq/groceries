@@ -17,6 +17,8 @@ app.register(pov, {
 	},
 });
 
+// TODO https://github.com/fastify/fastify-accepts
+
 app.register(formbody);
 
 app.register(fastifyStatic, {
@@ -24,16 +26,22 @@ app.register(fastifyStatic, {
 });
 
 app.get("/", async (request, reply) => {
+	if (request.headers.accept === "application/vnd.automerge") {
+		return reply.send(list.allAsAutomerge());
+	}
+
 	return reply.view("templates/index.pug", {
 		todos: list.all(),
-		initial: list.backup(),
-		feedURL: "/stream",
-		addURL: "/",
 	});
 });
 
 app.post("/", async (request, reply) => {
-	list.add(request.body.text);
+	if (request.body.changes) {
+		list.apply(request.body.changes);
+	} else {
+		list.add(request.body.text);
+	}
+
 	reply.redirect("/");
 });
 
@@ -49,14 +57,6 @@ app.get("/stream", (request, reply) => {
 		reply.raw.write(`id: ${id++}\n`);
 		reply.raw.write(`data: ${ev.change} \n\n`);
 	});
-});
-
-app.post("/foo", async (request, reply) => {
-	let changes = request.body.changes.map((change) => {
-		return new Uint8Array(Buffer.from(change, "base64"));
-	});
-	list.apply(changes);
-	reply.send("ok");
 });
 
 const start = async () => {
