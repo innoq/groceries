@@ -11,9 +11,9 @@ class List {
 		this.interval = setInterval(this.pushChanges.bind(this), 1000);
 	}
 
-	applyChanges(data) {
-		const change = decode(data);
-		let [newDoc] = Automerge.applyChanges(this.state, [change]);
+	apply(data) {
+		let changes = data.map((change) => decode(change));
+		let [newDoc] = Automerge.applyChanges(this.state, changes);
 		this.state = newDoc;
 		this.publish();
 	}
@@ -43,7 +43,7 @@ class List {
 	async pushChanges() {
 		if (this.changes.length > 0) {
 			try {
-				await fetch("/foo", {
+				await fetch("/", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -98,12 +98,16 @@ addEventListener("connect", (ev) => {
 });
 
 (async () => {
-	const initial = await fetch("/current");
+	const initial = await fetch("/", {
+		headers: {
+			Accept: "application/vnd.automerge",
+		},
+	});
 	list.load(await initial.text());
 
 	const source = new EventSource("/stream");
 	source.addEventListener("message", (ev) => {
-		list.applyChanges(ev.data);
+		list.apply([ev.data]);
 	});
 })().catch((err) => {
 	console.error(err);

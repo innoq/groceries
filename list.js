@@ -27,15 +27,18 @@ export class List {
 		return this.state.todos;
 	}
 
-	apply(changes) {
+	allAsAutomerge() {
+		let backup = Automerge.save(this.state);
+		return Buffer.from(backup).toString("base64");
+	}
+
+	apply(data) {
+		let changes = data.map((change) => {
+			return new Uint8Array(Buffer.from(change, "base64"));
+		});
 		let [newDoc] = Automerge.applyChanges(this.state, changes);
 		this.state = newDoc;
 		this.emitChanges(changes);
-	}
-
-	backup() {
-		let backup = Automerge.save(this.state);
-		return Buffer.from(backup).toString("base64");
 	}
 
 	onChange(fn) {

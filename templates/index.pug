@@ -17,7 +17,7 @@ html(lang="en")
         each todo in todos
           li= todo.text
 
-      form(action=addURL method="post")
+      form(action="/" method="post")
         label(for="text") Text:
         input#text(name="text" type="text")
 
